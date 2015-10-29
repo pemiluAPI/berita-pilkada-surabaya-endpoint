@@ -11,13 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151012035604) do
+ActiveRecord::Schema.define(version: 20151029041416) do
 
   create_table "news", force: true do |t|
     t.integer  "resource_id"
     t.date     "date"
     t.string   "title"
     t.string   "link"
+    t.string   "kind"
+    t.string   "tags"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

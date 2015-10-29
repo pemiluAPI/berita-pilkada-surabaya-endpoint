@@ -6,9 +6,11 @@ class News < ActiveRecord::Base
 
   scope :by_id, lambda{ |id| where("id = ?", id) unless id.nil? }
   scope :by_resource_id, lambda{ |resource_id| where("resource_id = ?", resource_id) unless resource_id.nil? }
+  scope :by_kind, lambda{ |kind| where("kind = ?", kind) unless kind.nil? }
+  scope :by_tags, lambda{ |tags| where("tags like ?", "%#{tags}%") unless tags.nil? }
 
   def self.apiall(data = {})
-    news          = self.by_id(data[:id]).by_resource_id(data[:resource_id])
+    news          = self.by_id(data[:id]).by_resource_id(data[:resource_id]).by_kind(data[:kind]).by_tags(data[:tags])
     paginate_news = news.limit(setlimit(data[:limit])).offset(data[:offset])
 
     return {
@@ -24,7 +26,9 @@ class News < ActiveRecord::Base
       resource: handle(resource),
       date: date,
       title: title,
-      link: link
+      link: link,
+      kind: kind,
+      tags: tags
     }
   end
 
